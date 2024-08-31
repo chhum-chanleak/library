@@ -22,6 +22,10 @@ const addBooksToList = (...books) => {
   }
 };
 
+const displayLibrary = () => {
+  console.log(myLibrary);
+};
+
 const arr = [1, 3, 8, 5, 6, 7, 2];
 
 const book1 = new Book('English For Children', 'Unknown', 'Educational');
