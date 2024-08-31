@@ -1,10 +1,12 @@
 const myLibrary = [];
 
 // Book constructor
-function Book(title, author, genre, pages) {
+function Book(title, author, genre, pages, readStatus) {
   this.title = title;
   this.author = author;
   this.genre = genre;
+  this.pages = pages;
+  this.readStatus = readStatus;
 }
 
 const addBookToLibrary = (book) => {
@@ -32,6 +34,12 @@ const handleNewBook = () => {
   form.style.display = 'block';
 };
 
+const handleRead = () => {
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    
+  }
+};
+
 // Apply event listener to NEW BOOK button
 const newBookBtn = document.querySelector('#new-book');
 newBookBtn.addEventListener('click', handleNewBook);
@@ -39,8 +47,7 @@ newBookBtn.addEventListener('click', handleNewBook);
 // Attach each book with a remove button
 const applyRemoveButton = () => {
   const lists = document.querySelectorAll('li');
-  console.log(lists);
-
+  
   for (let i = 0; i < lists.length; i += 1) {
     const button = document.createElement('button');
 
@@ -52,30 +59,32 @@ const applyRemoveButton = () => {
 // Attach each book with a remove button
 const applyReadButton = () => {
   const lists = document.querySelectorAll('li');
-  console.log(lists);
 
   for (let i = 0; i < lists.length; i += 1) {
     const button = document.createElement('button');
 
     button.textContent = 'Read';
+    button.setAttribute('id', 'read');
     lists[i].appendChild(button);
   }
 };
 
-const arr = [1, 3, 8, 5, 6, 7, 2];
 
-const book1 = new Book('English For Children', 'Unknown', 'Educational', 100);
+const book1 = new Book('English For Children', 'Unknown', 'Educational', 100, 'Not yet');
 addBookToLibrary(book1);
 const book2 = {
   title:'Programming',
   author: 'Unknown',
   genre: 'Educational',
-  pages: 200
+  pages: 200,
+  readStatus: 'Not yet'
 };
 const book3 = {
   title:'Programming',
   author: 'Unknown',
-  genre: 'Educational'
+  genre: 'Educational',
+  pages: 300,
+  readStatus: 'Not yet'
 };
 addBookToLibrary(book2);
 
