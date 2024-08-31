@@ -1,7 +1,7 @@
 const myLibrary = [];
 
 // Book constructor
-function Book(title, author, genre) {
+function Book(title, author, genre, pages) {
   this.title = title;
   this.author = author;
   this.genre = genre;
@@ -26,14 +26,25 @@ const displayLibrary = () => {
   console.log(myLibrary);
 };
 
+const handleNewBook = () => {
+  const form = document.querySelector('form');
+
+  form.style.display = 'block';
+};
+
+// Apply event listener to NEW BOOK button
+const newBookBtn = document.querySelector('#new-book');
+newBookBtn.addEventListener('click', handleNewBook);
+
 const arr = [1, 3, 8, 5, 6, 7, 2];
 
-const book1 = new Book('English For Children', 'Unknown', 'Educational');
+const book1 = new Book('English For Children', 'Unknown', 'Educational', 100);
 addBookToLibrary(book1);
 const book2 = {
   title:'Programming',
   author: 'Unknown',
-  genre: 'Educational'
+  genre: 'Educational',
+  pages: 200
 };
 const book3 = {
   title:'Programming',
