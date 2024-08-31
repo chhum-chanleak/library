@@ -36,6 +36,32 @@ const handleNewBook = () => {
 const newBookBtn = document.querySelector('#new-book');
 newBookBtn.addEventListener('click', handleNewBook);
 
+// Attach each book with a remove button
+const applyRemoveButton = () => {
+  const lists = document.querySelectorAll('li');
+  console.log(lists);
+
+  for (let i = 0; i < lists.length; i += 1) {
+    const button = document.createElement('button');
+
+    button.textContent = 'Remove';
+    lists[i].appendChild(button);
+  }
+};
+
+// Attach each book with a remove button
+const applyReadButton = () => {
+  const lists = document.querySelectorAll('li');
+  console.log(lists);
+
+  for (let i = 0; i < lists.length; i += 1) {
+    const button = document.createElement('button');
+
+    button.textContent = 'Read';
+    lists[i].appendChild(button);
+  }
+};
+
 const arr = [1, 3, 8, 5, 6, 7, 2];
 
 const book1 = new Book('English For Children', 'Unknown', 'Educational', 100);
@@ -55,3 +81,7 @@ addBookToLibrary(book2);
 
 addBooksToList(book1, book2);
 addBooksToList(book3);
+
+// Attach each book with Remove and Read buttons
+applyRemoveButton();
+applyReadButton();
