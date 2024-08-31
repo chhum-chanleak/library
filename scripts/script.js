@@ -16,14 +16,15 @@ const addBooksToLibrary = (...book) => {
   }
 };
 
-const addBooksToList = (...books) => {
+// Display all books in the library to list
+const addBooksToList = (library) => {
   const uList = document.querySelector('.book-list');
 
-  for (let i = 0; i < books.length; i += 1) {
+  for (let i = 0; i < library.length; i += 1) {
     const li = document.createElement('li');
     const span = document.createElement('span');
 
-    span.textContent = JSON.stringify(books[i]);
+    span.textContent = JSON.stringify(library[i]);
     li.appendChild(span);
     uList.appendChild(li);
   }
@@ -88,15 +89,6 @@ const handleRead = () => {
 const newBookBtn = document.querySelector('#new-book');
 newBookBtn.addEventListener('click', handleNewBook);
 
-// Apply event listeners to Read buttons
-// const applyEventListeners = () => {
-//   const buttons = document.querySelectorAll('#read');
-//   console.log(buttons);
-//   for (let i = 0; i < buttons.length; i += 1) {
-//     buttons[i].addEventListener('click', handleRead);
-//   }
-// };
-
 // Attach each book with a remove button
 const applyRemoveButton = () => {
   const lists = document.querySelectorAll('li');
@@ -124,7 +116,6 @@ const applyReadButton = () => {
 
 
 const book1 = new Book('book1', 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
-addBooksToLibrary(book1);
 const book2 = {
   id: 'book2',
   title:'Programming',
@@ -141,10 +132,9 @@ const book3 = {
   pages: 300,
   readStatus: 'Not yet'
 };
-addBooksToLibrary(book2, book3);
+addBooksToLibrary(book2, book3, book1);
 
-addBooksToList(book1, book2);
-addBooksToList(book3);
+addBooksToList(myLibrary);
 
 // Attach each book with Remove and Read buttons
 applyRemoveButton();
