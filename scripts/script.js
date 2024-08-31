@@ -10,8 +10,10 @@ function Book(id, title, author, genre, pages, readStatus) {
   this.readStatus = readStatus;
 }
 
-const addBookToLibrary = (book) => {
-  myLibrary.push(book);
+const addBooksToLibrary = (...book) => {
+  for (let i = 0; i < book.length; i += 1) {
+    myLibrary.push(book[i]);
+  }
 };
 
 const addBooksToList = (...books) => {
@@ -19,8 +21,10 @@ const addBooksToList = (...books) => {
 
   for (let i = 0; i < books.length; i += 1) {
     const li = document.createElement('li');
+    const span = document.createElement('span');
 
-    li.textContent = JSON.stringify(books[i]);
+    span.textContent = JSON.stringify(books[i]);
+    li.appendChild(span);
     uList.appendChild(li);
   }
 };
@@ -29,23 +33,52 @@ const displayLibrary = () => {
   console.log(myLibrary);
 };
 
+const toggleReadStatus = (obj) => {
+  if (obj.readStatus === 'Not yet') {
+    obj.readStatus = 'Already read';
+  } else {
+    obj.readStatus = 'Not yet';
+  }  
+};
+
 const handleNewBook = () => {
   const form = document.querySelector('form');
 
   form.style.display = 'block';
 };
 
+const handleSubmitButton = () => {
+  const submitButton = document.querySelector('.submit');
+
+  submitButton.addEventListener('click', (event) => {
+    event.preventDefault();
+  })
+};
+
 
 const handleRead = () => {
-  const readButtons = document.querySelectorAll('#read');
-  // console.log(getParentNode(readButton));
+  const readButtons = document.querySelectorAll('.book-list button');
+  const spans = document.querySelectorAll('.book-list span');
 
   for (let i = 0; i < readButtons.length; i += 1) {
     readButtons[i].addEventListener('click', () => {
       if (readButtons[i].style.backgroundColor === '') {
         readButtons[i].style.backgroundColor = '#00FF00';
+
+        for (let j = 0; j < myLibrary.length; j += 1) {
+          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
+            toggleReadStatus(myLibrary[j]);
+            spans[j].textContent =  JSON.stringify(myLibrary[j]);
+          }
+        }
       } else {
         readButtons[i].style.backgroundColor = '';
+        for (let j = 0; j < myLibrary.length; j += 1) {
+          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
+            toggleReadStatus(myLibrary[j]);
+            spans[j].textContent =  JSON.stringify(myLibrary[j]);
+          }
+        }
       }      
     })
   }
@@ -72,7 +105,7 @@ const applyRemoveButton = () => {
     const button = document.createElement('button');
 
     button.textContent = 'Remove';
-    lists[i].appendChild(button);
+    lists[i].insertAdjacentElement('afterend', button); 
   }
 };
 
@@ -84,16 +117,16 @@ const applyReadButton = () => {
     const button = document.createElement('button');
 
     button.textContent = 'Read';
-    button.setAttribute('id', 'read');
-    lists[i].appendChild(button);
+    button.setAttribute('id', myLibrary[i].id);
+    lists[i].insertAdjacentElement('afterend', button);  
   }
 };
 
 
-const book1 = new Book(1, 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
-addBookToLibrary(book1);
+const book1 = new Book('book1', 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
+addBooksToLibrary(book1);
 const book2 = {
-  id: 2,
+  id: 'book2',
   title:'Programming',
   author: 'Unknown',
   genre: 'Educational',
@@ -101,14 +134,14 @@ const book2 = {
   readStatus: 'Not yet'
 };
 const book3 = {
-  id: 3,
+  id: 'book3',
   title:'Programming',
   author: 'Unknown',
   genre: 'Educational',
   pages: 300,
   readStatus: 'Not yet'
 };
-addBookToLibrary(book2);
+addBooksToLibrary(book2, book3);
 
 addBooksToList(book1, book2);
 addBooksToList(book3);
@@ -116,5 +149,6 @@ addBooksToList(book3);
 // Attach each book with Remove and Read buttons
 applyRemoveButton();
 applyReadButton();
-// Handle Read buttons
+// Handle buttons
 handleRead();
+handleSubmitButton();
