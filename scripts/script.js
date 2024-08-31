@@ -1,7 +1,8 @@
 const myLibrary = [];
 
 // Book constructor
-function Book(title, author, genre, pages, readStatus) {
+function Book(id, title, author, genre, pages, readStatus) {
+  this.id = id,
   this.title = title;
   this.author = author;
   this.genre = genre;
@@ -34,15 +35,34 @@ const handleNewBook = () => {
   form.style.display = 'block';
 };
 
+
 const handleRead = () => {
-  for (let i = 0; i < myLibrary.length; i += 1) {
-    
+  const readButtons = document.querySelectorAll('#read');
+  // console.log(getParentNode(readButton));
+
+  for (let i = 0; i < readButtons.length; i += 1) {
+    readButtons[i].addEventListener('click', () => {
+      if (readButtons[i].style.backgroundColor === '') {
+        readButtons[i].style.backgroundColor = '#00FF00';
+      } else {
+        readButtons[i].style.backgroundColor = '';
+      }      
+    })
   }
 };
 
 // Apply event listener to NEW BOOK button
 const newBookBtn = document.querySelector('#new-book');
 newBookBtn.addEventListener('click', handleNewBook);
+
+// Apply event listeners to Read buttons
+// const applyEventListeners = () => {
+//   const buttons = document.querySelectorAll('#read');
+//   console.log(buttons);
+//   for (let i = 0; i < buttons.length; i += 1) {
+//     buttons[i].addEventListener('click', handleRead);
+//   }
+// };
 
 // Attach each book with a remove button
 const applyRemoveButton = () => {
@@ -70,9 +90,10 @@ const applyReadButton = () => {
 };
 
 
-const book1 = new Book('English For Children', 'Unknown', 'Educational', 100, 'Not yet');
+const book1 = new Book(1, 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
 addBookToLibrary(book1);
 const book2 = {
+  id: 2,
   title:'Programming',
   author: 'Unknown',
   genre: 'Educational',
@@ -80,6 +101,7 @@ const book2 = {
   readStatus: 'Not yet'
 };
 const book3 = {
+  id: 3,
   title:'Programming',
   author: 'Unknown',
   genre: 'Educational',
@@ -94,3 +116,5 @@ addBooksToList(book3);
 // Attach each book with Remove and Read buttons
 applyRemoveButton();
 applyReadButton();
+// Handle Read buttons
+handleRead();
