@@ -44,8 +44,43 @@ const toggleReadStatus = (obj) => {
 
 const handleNewBook = () => {
   const form = document.querySelector('form');
+  const publishNewBookButton = document.querySelector('#new-book');
 
-  form.style.display = 'block';
+  if (form.style.display === '') {
+    publishNewBookButton.textContent = 'HIDE FORM';
+    form.style.display = 'block';
+  } else {
+    publishNewBookButton.textContent = 'PUBLISH NEW BOOK';
+    form.style.display = '';
+  }
+};
+
+const handleRemoveButton = () => {
+  const removeButtons = document.querySelectorAll('.btn.remove');
+  const readButtons = document.querySelectorAll('.btn.read');
+  const lists = document.querySelectorAll('.library li');
+  
+  // Apply event listener
+  for (let i = 0; i < removeButtons.length; i += 1) {
+    removeButtons[i].addEventListener('click', () => {
+      lists[i].remove();
+      readButtons[i].remove();
+      removeButtons[i].remove();
+      console.log(`${readButtons[i].id} has been removed.`);
+      removeItem(readButtons[i].id, myLibrary);
+    })   
+  }
+};
+
+// Remove item from Library
+const removeItem = (id, ...object) => {
+  for (let i = 0; i < object.length; i += 1) {
+    for (const prop in object[i]) {
+      if (id === object[i][prop].id) {
+        object[i].splice(+prop[i], 1);        
+      }
+    }
+  }
 };
 
 const handleSubmitButton = () => {
@@ -58,26 +93,28 @@ const handleSubmitButton = () => {
 
 
 const handleRead = () => {
-  const readButtons = document.querySelectorAll('.book-list button');
+  const readButtons = document.querySelectorAll('.book-list .btn.read');
   const spans = document.querySelectorAll('.book-list span');
 
   for (let i = 0; i < readButtons.length; i += 1) {
     readButtons[i].addEventListener('click', () => {
       if (readButtons[i].style.backgroundColor === '') {
-        readButtons[i].style.backgroundColor = '#00FF00';
+        readButtons[i].style.backgroundColor = '#037a1c';
+        readButtons[i].style.color = '#fff';
 
         for (let j = 0; j < myLibrary.length; j += 1) {
           if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
             toggleReadStatus(myLibrary[j]);
-            spans[j].textContent =  JSON.stringify(myLibrary[j]);
+            spans[j].textContent = JSON.stringify(myLibrary[j]);
           }
         }
       } else {
         readButtons[i].style.backgroundColor = '';
+        readButtons[i].style.color = '#000';
         for (let j = 0; j < myLibrary.length; j += 1) {
           if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
             toggleReadStatus(myLibrary[j]);
-            spans[j].textContent =  JSON.stringify(myLibrary[j]);
+            spans[j].textContent = JSON.stringify(myLibrary[j]);
           }
         }
       }      
@@ -97,6 +134,8 @@ const applyRemoveButton = () => {
     const button = document.createElement('button');
 
     button.textContent = 'Remove';
+    button.setAttribute('id', myLibrary[i].id);
+    button.setAttribute('class', 'btn remove');
     lists[i].insertAdjacentElement('afterend', button); 
   }
 };
@@ -110,10 +149,10 @@ const applyReadButton = () => {
 
     button.textContent = 'Read';
     button.setAttribute('id', myLibrary[i].id);
+    button.setAttribute('class', 'btn read');
     lists[i].insertAdjacentElement('afterend', button);  
   }
 };
-
 
 const book1 = new Book('book1', 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
 const book2 = {
@@ -132,7 +171,8 @@ const book3 = {
   pages: 300,
   readStatus: 'Not yet'
 };
-addBooksToLibrary(book2, book3, book1);
+const book4 = new Book('book4', 'Differential Equations', 'G. Leibniz', 'Educational', 400, 'Not yet');
+addBooksToLibrary(book2, book3, book1, book4);
 
 addBooksToList(myLibrary);
 
@@ -142,3 +182,4 @@ applyReadButton();
 // Handle buttons
 handleRead();
 handleSubmitButton();
+handleRemoveButton();
