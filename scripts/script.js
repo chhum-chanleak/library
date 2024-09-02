@@ -1,14 +1,24 @@
 const myLibrary = [];
 
 // Book constructor
-function Book(id, title, author, genre, pages, readStatus) {
-  this.id = id,
+function Book(title, author, genre, pages, readStatus = 'Not yet', id = `book${automaticallyIncreasedId()}`) {
   this.title = title;
   this.author = author;
   this.genre = genre;
   this.pages = pages;
   this.readStatus = readStatus;
+  this.id = id;
 }
+
+// Get automatically increased id
+const IncreasingId = () => {
+  let count = 0;
+
+  return () => {
+    return count += 1;
+  }
+};
+const automaticallyIncreasedId = IncreasingId();
 
 const addBooksToLibrary = (...book) => {
   for (let i = 0; i < book.length; i += 1) {
@@ -83,14 +93,35 @@ const removeItem = (id, ...object) => {
   }
 };
 
-const handleSubmitButton = () => {
-  const submitButton = document.querySelector('.submit');
+// Gather all form data
+const createBookFromForm = (event) => {
+  event.preventDefault();
 
-  submitButton.addEventListener('click', (event) => {
-    event.preventDefault();
-  })
+  const inputs = document.querySelectorAll('form input');
+  const formData = [];
+  let book;
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    formData.push(inputs[i].value);
+  }
+  
+  book = new Book(...formData);
+  addBooksToLibrary(book);
+  addBooksToList(myLibrary);
 };
 
+
+const handleSubmitButton = () => {
+  const submitButton = document.querySelector('.submit');
+  const inputs = document.querySelectorAll('form input');
+
+  submitButton.addEventListener('click', createBookFromForm);
+  submitButton.addEventListener('click', () => {
+    for (let i = 0; i < inputs.length; i += 1) {
+      inputs[i].value = '';
+    }
+  })
+};
 
 const handleRead = () => {
   const readButtons = document.querySelectorAll('.book-list .btn.read');
@@ -122,10 +153,6 @@ const handleRead = () => {
   }
 };
 
-// Apply event listener to NEW BOOK button
-const newBookBtn = document.querySelector('#new-book');
-newBookBtn.addEventListener('click', handleNewBook);
-
 // Attach each book with a remove button
 const applyRemoveButton = () => {
   const lists = document.querySelectorAll('li');
@@ -154,26 +181,6 @@ const applyReadButton = () => {
   }
 };
 
-const book1 = new Book('book1', 'English For Children', 'Unknown', 'Educational', 100, 'Not yet');
-const book2 = {
-  id: 'book2',
-  title:'Programming',
-  author: 'Unknown',
-  genre: 'Educational',
-  pages: 200,
-  readStatus: 'Not yet'
-};
-const book3 = {
-  id: 'book3',
-  title:'Programming',
-  author: 'Unknown',
-  genre: 'Educational',
-  pages: 300,
-  readStatus: 'Not yet'
-};
-const book4 = new Book('book4', 'Differential Equations', 'G. Leibniz', 'Educational', 400, 'Not yet');
-addBooksToLibrary(book2, book3, book1, book4);
-
 addBooksToList(myLibrary);
 
 // Attach each book with Remove and Read buttons
@@ -183,3 +190,9 @@ applyReadButton();
 handleRead();
 handleSubmitButton();
 handleRemoveButton();
+// Apply event listener to NEW BOOK button
+const newBookBtn = document.querySelector('#new-book');
+newBookBtn.addEventListener('click', handleNewBook);
+// Apply event listener to Submit button
+const submitButton = document.querySelector('.submit');
+submitButton.addEventListener('click', handleSubmitButton);
