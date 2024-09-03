@@ -31,16 +31,23 @@ const addBooksToList = (...book) => {
   const uList = document.querySelector('.book-list');
 
   for (let i = 0; i < book.length; i += 1) {
-
     const li = document.createElement('li');
-    const span = document.createElement('span');
+    
+    for (const prop in book[i]) {
+      const span = document.createElement('span');
+      const nestedList = document.createElement('li');
 
-    span.textContent = JSON.stringify(book[i]);
-    li.setAttribute('id', `${book[i].id}`);
-    li.appendChild(span);
-    uList.appendChild(li);
-    applyRemoveButtonToNode(span);
-    applyReadButtonToNode(span);
+      span.textContent = `${prop}: ${book[i][prop]}`;
+      span.setAttribute('class', `span ${prop}`);
+      nestedList.appendChild(span);
+      li.setAttribute('id', `${book[i].id}`);
+      li.appendChild(nestedList);
+      uList.appendChild(li);
+    }
+    const idSpan = document.querySelector('.span.id');
+
+    applyRemoveButtonToNode(idSpan.parentNode);
+    applyReadButtonToNode(idSpan.parentNode);
   }
 };
 
