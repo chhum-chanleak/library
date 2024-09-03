@@ -31,6 +31,7 @@ const addBooksToList = (...book) => {
   const uList = document.querySelector('.book-list');
 
   for (let i = 0; i < book.length; i += 1) {
+
     const li = document.createElement('li');
     const span = document.createElement('span');
 
@@ -53,19 +54,6 @@ const toggleReadStatus = (obj) => {
   } else {
     obj.readStatus = 'Not yet';
   }  
-};
-
-const handlePublishNewBookButton = () => {
-  const form = document.querySelector('form');
-  const publishNewBookButton = document.querySelector('#new-book');
-
-  if (form.style.display === '') {
-    publishNewBookButton.textContent = 'HIDE FORM';
-    form.style.display = 'block';
-  } else {
-    publishNewBookButton.textContent = 'PUBLISH NEW BOOK';
-    form.style.display = '';
-  }
 };
 
 // Remove item from Library
@@ -97,17 +85,57 @@ const createBookFromForm = (event) => {
   handleRemoveButton();
 };
 
+// Clear all books from list
+const clearBookList = () => {
+  const lists = document.querySelectorAll('li');
+
+  for (let i = 0; i < lists.length; i += 1) {
+    lists[i].remove();
+  }
+};
+
 const handleRemoveButton = () => {
   const removeButtons = document.querySelectorAll('.btn.remove');
+  const removeMessage = document.querySelector('.remove-message');
+  const bookId = document.querySelector('#book-id');
+  const yes = document.querySelector('#yes');
 
   for (let i = 0; i < removeButtons.length; i += 1) {
     removeButtons[i].addEventListener('click', () => {
-      removeItem(removeButtons[i].parentNode.getAttribute('id'), myLibrary);
-      removeButtons[i].parentNode.remove();
+
+      removeMessage.style.display= 'flex';
+      bookId.textContent = `${removeButtons[i].parentNode.getAttribute('id')}?`;
+      bookId.style.color = '#6c61ef';
+      yes.setAttribute('class', `${removeButtons[i].parentNode.getAttribute('id')}`);
     });
   }
-
 };
+
+const handleYes = () => {
+  const removeMessage = document.querySelector('.remove-message');
+  const yes = document.querySelector('#yes');
+
+  removeMessage.setAttribute('id', 'Yes');
+  removeMessage.style.display = 'none';
+  removeItem(`${yes.getAttribute('class')}`, myLibrary);
+  console.log(`${yes.getAttribute('class')} has been removed.`);
+  clearBookList();
+  addBooksToList(...myLibrary);
+  handleRemoveButton();
+};
+
+const handleNo = () => {
+  const removeMessage = document.querySelector('.remove-message');
+
+  removeMessage.setAttribute('id', 'No');
+  removeMessage.style.display = 'none';
+};
+
+const yes = document.querySelector('#yes');
+const no = document.querySelector('#no');
+
+no.addEventListener('click', handleNo);
+yes.addEventListener('click', handleYes);
 
 const handleSubmitButton = (event) => {
   const submitButton = document.querySelector('.submit');
@@ -151,6 +179,19 @@ const handleReadButton = () => {
   }
 };
 
+const handlePublishNewBookButton = () => {
+  const form = document.querySelector('form');
+  const publishNewBookButton = document.querySelector('#new-book');
+
+  if (form.style.display === '') {
+    publishNewBookButton.textContent = 'HIDE FORM';
+    form.style.display = 'block';
+  } else {
+    publishNewBookButton.textContent = 'PUBLISH NEW BOOK';
+    form.style.display = '';
+  }
+};
+
 // Attach each book with a remove button
 const applyRemoveButtonToNode = (node) => {
   const button = document.createElement('button');
@@ -158,7 +199,6 @@ const applyRemoveButtonToNode = (node) => {
   button.textContent = 'Remove';
   button.setAttribute('class', 'btn remove');
   node.insertAdjacentElement('afterend', button);
-  handleRemoveButton();
 };
 
 // Attach each book with a remove button
