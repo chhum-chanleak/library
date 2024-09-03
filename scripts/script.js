@@ -32,6 +32,7 @@ const addBooksToList = (...book) => {
 
   for (let i = 0; i < book.length; i += 1) {
     const li = document.createElement('li');
+    const btnSpan = document.createElement('span');
     
     for (const prop in book[i]) {
       const span = document.createElement('span');
@@ -44,10 +45,10 @@ const addBooksToList = (...book) => {
       li.appendChild(nestedList);
       uList.appendChild(li);
     }
-    const idSpan = document.querySelector('.span.id');
-
-    applyRemoveButtonToNode(idSpan.parentNode);
-    applyReadButtonToNode(idSpan.parentNode);
+    btnSpan.textContent = ' ';
+    li.appendChild(btnSpan); 
+    applyRemoveButtonToNode(btnSpan);
+    applyReadButtonToNode(btnSpan);       
   }
 };
 
