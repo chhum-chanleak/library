@@ -81,6 +81,10 @@ const removeItem = (id, ...arrayObj) => {
 // Gather all form data
 const createBookFromForm = (event) => {
   event.preventDefault();
+  
+  if (validateSubmitButton() === false) {
+    return;
+  }
 
   const inputs = document.querySelectorAll('form input');
   const formData = [];
@@ -205,7 +209,7 @@ const handleReadButton = () => {
   }
 };
 
-const handleSubmitButton = (event) => {
+const handleSubmitButton = () => {
   const submitButton = document.querySelector('.submit');
   const inputs = document.querySelectorAll('form input');
 
@@ -251,8 +255,16 @@ const applyReadButtonToNode = (node) => {
 
 const validateSubmitButton = () => {
   const inputs = document.querySelectorAll('form input');
-  console.log(inputs);
+  const submitMessage = document.querySelector('.submit-message');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    if (inputs[i].value === '') {
+      submitMessage.style.display = 'inline-block';
+      return false;
+    }    
+  }
 };
+
 
 // Handle buttons
 handleSubmitButton();
