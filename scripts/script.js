@@ -180,7 +180,6 @@ const handleYes = () => {
   clearBookList();
   addBooksToList(...myLibrary);
   handleRemoveButton();
-  showTotalBooks();
 };
 
 const handleNo = () => {
@@ -298,9 +297,17 @@ const showTotalBooks = () => {
   const total = document.querySelector('.label > h2:last-child');
   const span = document.createElement('span');
 
-  span.textContent = `${myLibrary.length}`
+  span.textContent = `${myLibrary.length}`;
   span.style.color = `rgb(0, 100, 0)`;
   total.appendChild(span);
+};
+
+const resetTotalBooks = () => {
+  const total = document.querySelector('.label > h2:last-child');
+  
+  for (let i = 0; i < total.children.length; i += 1) {
+    total.children[i].remove();
+  }
 };
 
 // Handle buttons
