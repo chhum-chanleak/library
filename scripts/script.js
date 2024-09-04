@@ -137,6 +137,15 @@ const getObject = (id) => {
   }
 };
 
+// Remove an object from an array of objects by passing an id
+const removeObj = (id) => {
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    if (id === myLibrary[i].id) {
+      myLibrary.splice(i, 1);
+    }
+  }
+};
+
 const handleRemoveButton = () => {
   const removeButtons = document.querySelectorAll('.btn.remove');
   const removeMessage = document.querySelector('.remove-message');
@@ -180,6 +189,38 @@ const no = document.querySelector('#no');
 no.addEventListener('click', handleNo);
 yes.addEventListener('click', handleYes);
 
+// Change background-color when click on Read button
+const toggleReadButton = () => {
+  const readButtons = document.querySelectorAll('.btn.read');
+
+  for (let i = 0; i < readButtons.length; i += 1) {
+    if (readButtons[i].style.backgroundColor === '') {
+      readButtons[i].style.backgroundColor = '#0f0';
+    } else {
+      readButtons[i].style.backgroundColor = '';
+    }
+  }
+};
+
+const handleReadButton = () => {
+  const readButtons = document.querySelectorAll('.btn.read');
+
+  for (let i = 0; i < readButtons.length; i += 1) {
+
+    readButtons[i].addEventListener('click', () => {
+      
+      toggleReadStatus(getObject(readButtons[i].parentNode.getAttribute('id')));
+      clearBookList();
+      addBooksToList(...myLibrary);
+      handleRemoveButton();
+      handleReadButton();
+    });
+
+    // Change background-color to green when clicked
+    readButtons[i].addEventListener('click', toggleReadButton);
+  }
+};
+
 const handleSubmitButton = (event) => {
   const submitButton = document.querySelector('.submit');
   const inputs = document.querySelectorAll('form input');
@@ -190,52 +231,6 @@ const handleSubmitButton = (event) => {
       inputs[i].value = '';
     }
   })
-};
-
-const handleReadButton = () => {
-
-  const readButtons = document.querySelectorAll('.btn.read');
-
-  for (let i = 0; i < readButtons.length; i += 1) {
-    readButtons[i].addEventListener('click', () => {
-      console.log(readButtons[i].getAttribute('id'));
-      for (let j = 0; j < myLibrary.length; j += 1) {
-        if (readButtons[i].parentNode.getAttribute('id') === myLibrary[j].id) {
-          toggleReadStatus(myLibrary[j]);
-          clearBookList();
-          addBooksToList(...myLibrary);          
-        }
-      }
-    });
-  }
-
-  // const readButtons = document.querySelectorAll('.book-list .btn.read');
-  // const spans = document.querySelectorAll('.book-list span');
-
-  // for (let i = 0; i < readButtons.length; i += 1) {
-  //   readButtons[i].addEventListener('click', () => {
-  //     if (readButtons[i].style.backgroundColor === '') {
-  //       readButtons[i].style.backgroundColor = '#037a1c';
-  //       readButtons[i].style.color = '#fff';
-
-  //       for (let j = 0; j < myLibrary.length; j += 1) {
-  //         if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-  //           toggleReadStatus(myLibrary[j]);
-  //           spans[j].textContent = JSON.stringify(myLibrary[j]);
-  //         }
-  //       }
-  //     } else {
-  //       readButtons[i].style.backgroundColor = '';
-  //       readButtons[i].style.color = '#000';
-  //       for (let j = 0; j < myLibrary.length; j += 1) {
-  //         if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-  //           toggleReadStatus(myLibrary[j]);
-  //           spans[j].textContent = JSON.stringify(myLibrary[j]);
-  //         }
-  //       }
-  //     }      
-  //   })
-  // }
 };
 
 const handlePublishNewBookButton = () => {
