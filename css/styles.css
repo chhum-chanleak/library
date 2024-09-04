@@ -96,11 +96,16 @@ main {
       margin-bottom: 1rem;
     }
 
-    & .row {
+    & .row:not(:last-child) {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       margin-bottom: 1rem;
+    }
+
+    & .row:last-child {
+      display: flex;
+      align-items: center;
     }
 
     & input {
@@ -113,6 +118,12 @@ main {
 
     & input:focus {
       border: 2px solid #6c61ef;
+    }
+
+    & .submit-message {
+      display: none;
+      color: red;
+      margin-left: 80px;
     }
   }
   
