@@ -100,6 +100,7 @@ const createBookFromForm = (event) => {
   handleRemoveButton();
   handleReadButton();
   clearInputFields();
+  resetTotalBooks();
   showTotalBooks();
 };
 
@@ -180,6 +181,8 @@ const handleYes = () => {
   clearBookList();
   addBooksToList(...myLibrary);
   handleRemoveButton();
+  resetTotalBooks();
+  showTotalBooks();
 };
 
 const handleNo = () => {
