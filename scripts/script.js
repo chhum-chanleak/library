@@ -265,6 +265,14 @@ const validateSubmitButton = () => {
   }
 };
 
+// Show form when DOM finished loading
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form');
+  const publishNewBookButton = document.querySelector('button#new-book');
+  
+  form.style.display = 'block';
+  publishNewBookButton.textContent = 'HIDE FORM';
+});
 
 // Handle buttons
 handleSubmitButton();
