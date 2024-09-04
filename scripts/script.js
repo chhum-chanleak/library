@@ -100,6 +100,7 @@ const createBookFromForm = (event) => {
   handleRemoveButton();
   handleReadButton();
   clearInputFields();
+  showTotalBooks();
 };
 
 // Clear all books from list
@@ -179,6 +180,7 @@ const handleYes = () => {
   clearBookList();
   addBooksToList(...myLibrary);
   handleRemoveButton();
+  showTotalBooks();
 };
 
 const handleNo = () => {
@@ -293,8 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Show total number of books
 const showTotalBooks = () => {
-  const total = document.querySelector('.title > h2:last-child');
-  console.log(total);
+  const total = document.querySelector('.label > h2:last-child');
+
   total.textContent = `Total: ${myLibrary.length}`;
 };
 
