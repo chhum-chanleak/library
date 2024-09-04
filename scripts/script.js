@@ -296,8 +296,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Show total number of books
 const showTotalBooks = () => {
   const total = document.querySelector('.label > h2:last-child');
+  const span = document.createElement('span');
 
-  total.textContent = `Total: ${myLibrary.length}`;
+  span.textContent = `${myLibrary.length}`
+  span.style.color = `rgb(0, 100, 0)`;
+  total.appendChild(span);
 };
 
 // Handle buttons
