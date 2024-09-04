@@ -189,19 +189,6 @@ const no = document.querySelector('#no');
 no.addEventListener('click', handleNo);
 yes.addEventListener('click', handleYes);
 
-// Change background-color when click on Read button
-const toggleReadButton = () => {
-  const readButtons = document.querySelectorAll('.btn.read');
-
-  for (let i = 0; i < readButtons.length; i += 1) {
-    if (readButtons[i].style.backgroundColor === '') {
-      readButtons[i].style.backgroundColor = '#0f0';
-    } else {
-      readButtons[i].style.backgroundColor = '';
-    }
-  }
-};
-
 const handleReadButton = () => {
   const readButtons = document.querySelectorAll('.btn.read');
 
@@ -214,10 +201,7 @@ const handleReadButton = () => {
       addBooksToList(...myLibrary);
       handleRemoveButton();
       handleReadButton();
-    });
-
-    // Change background-color to green when clicked
-    readButtons[i].addEventListener('click', toggleReadButton);
+    });    
   }
 };
 
@@ -259,10 +243,15 @@ const applyRemoveButtonToNode = (node) => {
 const applyReadButtonToNode = (node) => {
   const button = document.createElement('button');
 
-  button.textContent = 'Read';
+  button.textContent = 'Mark As Read';
   button.setAttribute('class', `btn read`);
   node.insertAdjacentElement('afterend', button);
   button.setAttribute('id', `read-${button.parentNode.getAttribute('id')}`);
+};
+
+const validateSubmitButton = () => {
+  const inputs = document.querySelectorAll('form input');
+  console.log(inputs);
 };
 
 // Handle buttons
