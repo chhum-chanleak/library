@@ -258,6 +258,7 @@ const applyReadButtonToNode = (node) => {
   button.setAttribute('id', `read-${button.parentNode.getAttribute('id')}`);
 };
 
+// Return false when one of the input fields is empty
 const validateSubmitButton = () => {
   const inputs = document.querySelectorAll('form input');
   const submitMessage = document.querySelector('.submit-message');
@@ -266,7 +267,9 @@ const validateSubmitButton = () => {
     if (inputs[i].value === '') {
       submitMessage.style.display = 'inline-block';
       return false;
-    }    
+    } else {
+      submitMessage.style.display = 'none';
+    }   
   }
 };
 
