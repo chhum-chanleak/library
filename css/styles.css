@@ -20,21 +20,29 @@ main {
   & .library {
     padding: var(--spacing-padding);
 
-    & button {
-      display: block;
-    }
-
     & .btn.remove {
       background-color: #ae0707;
       color: #fff;
       margin-bottom: 1rem;
     }
 
-    & li {
+    & li.book-list-item {
       display: inline-block;
       border: 1px solid #000;
       border-radius: var(--spacing-padding);
       padding: 4px;
+    }
+
+    & li.book-list-item > li {
+      display: inline-block;
+      border: 1px solid #0002;
+      border-radius: var(--spacing-padding);
+      padding: 4px;
+      color: #fff;
+    }
+
+    & .btn.read {
+      margin-left: 1rem;
     }
 
     & .remove-message {
