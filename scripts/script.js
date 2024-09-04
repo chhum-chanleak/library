@@ -99,6 +99,7 @@ const createBookFromForm = (event) => {
   addBooksToLibrary(book);
   handleRemoveButton();
   handleReadButton();
+  clearInputFields();
 };
 
 // Clear all books from list
@@ -262,7 +263,6 @@ const applyReadButtonToNode = (node) => {
 const validateSubmitButton = () => {
   const inputs = document.querySelectorAll('form input');
   const submitMessage = document.querySelector('.submit-message');
-  let count = 0;
 
   for (let i = 0; i < inputs.length; i += 1) {
     if (inputs[i].value === '') {
@@ -270,7 +270,6 @@ const validateSubmitButton = () => {
       return false;
     } else {
       submitMessage.style.display = 'none';
-
     }   
   }
 };
