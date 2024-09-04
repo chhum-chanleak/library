@@ -291,6 +291,13 @@ document.addEventListener('DOMContentLoaded', () => {
   publishNewBookButton.textContent = 'HIDE FORM';
 });
 
+// Show total number of books
+const showTotalBooks = () => {
+  const total = document.querySelector('.title > h2:last-child');
+  console.log(total);
+  total.textContent = `Total: ${myLibrary.length}`;
+};
+
 // Handle buttons
 handleSubmitButton();
 // Apply event listener to NEW BOOK button
