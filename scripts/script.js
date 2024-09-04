@@ -33,6 +33,8 @@ const addBooksToList = (...book) => {
   for (let i = 0; i < book.length; i += 1) {
     const li = document.createElement('li');
     const btnSpan = document.createElement('span');
+
+    li.setAttribute('class', 'book-list-item');
     
     for (const prop in book[i]) {
       const span = document.createElement('span');
@@ -48,7 +50,8 @@ const addBooksToList = (...book) => {
     btnSpan.textContent = ' ';
     li.appendChild(btnSpan); 
     applyRemoveButtonToNode(btnSpan);
-    applyReadButtonToNode(btnSpan);       
+    applyReadButtonToNode(btnSpan);
+    setColorForProps();       
   }
 };
 
@@ -91,6 +94,7 @@ const createBookFromForm = (event) => {
   addBooksToList(book);
   addBooksToLibrary(book);
   handleRemoveButton();
+  handleReadButton();
 };
 
 // Clear all books from list
@@ -99,6 +103,37 @@ const clearBookList = () => {
 
   for (let i = 0; i < lists.length; i += 1) {
     lists[i].remove();
+  }
+};
+
+// Set color to all object property tags
+const setColorForProps = () =>  {
+  const propSpans = document.querySelectorAll('li.book-list-item span');
+
+  for (let i = 0; i < propSpans.length; i += 1) {
+    switch(propSpans[i].getAttribute('class')) {
+      case 'span title': propSpans[i].parentNode.style.backgroundColor = '#8B0000';
+        break;
+      case 'span author': propSpans[i].parentNode.style.backgroundColor = '#FF8C00';
+        break;
+      case 'span genre': propSpans[i].parentNode.style.backgroundColor = '#9B870C88';
+        break;
+      case 'span pages': propSpans[i].parentNode.style.backgroundColor = '#006400';
+        break;
+      case 'span readStatus': propSpans[i].parentNode.style.backgroundColor = '#00008B';
+        break;
+      case 'span id': propSpans[i].parentNode.style.backgroundColor = '#4B0082';
+        break;
+    }
+  }
+};
+
+// Get object by inputting id
+const getObject = (id) => {
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    if (id === myLibrary[i].id) {
+      return myLibrary[i];
+    }
   }
 };
 
@@ -158,33 +193,49 @@ const handleSubmitButton = (event) => {
 };
 
 const handleReadButton = () => {
-  const readButtons = document.querySelectorAll('.book-list .btn.read');
-  const spans = document.querySelectorAll('.book-list span');
+
+  const readButtons = document.querySelectorAll('.btn.read');
 
   for (let i = 0; i < readButtons.length; i += 1) {
     readButtons[i].addEventListener('click', () => {
-      if (readButtons[i].style.backgroundColor === '') {
-        readButtons[i].style.backgroundColor = '#037a1c';
-        readButtons[i].style.color = '#fff';
-
-        for (let j = 0; j < myLibrary.length; j += 1) {
-          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-            toggleReadStatus(myLibrary[j]);
-            spans[j].textContent = JSON.stringify(myLibrary[j]);
-          }
+      console.log(readButtons[i].getAttribute('id'));
+      for (let j = 0; j < myLibrary.length; j += 1) {
+        if (readButtons[i].parentNode.getAttribute('id') === myLibrary[j].id) {
+          toggleReadStatus(myLibrary[j]);
+          clearBookList();
+          addBooksToList(...myLibrary);          
         }
-      } else {
-        readButtons[i].style.backgroundColor = '';
-        readButtons[i].style.color = '#000';
-        for (let j = 0; j < myLibrary.length; j += 1) {
-          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-            toggleReadStatus(myLibrary[j]);
-            spans[j].textContent = JSON.stringify(myLibrary[j]);
-          }
-        }
-      }      
-    })
+      }
+    });
   }
+
+  // const readButtons = document.querySelectorAll('.book-list .btn.read');
+  // const spans = document.querySelectorAll('.book-list span');
+
+  // for (let i = 0; i < readButtons.length; i += 1) {
+  //   readButtons[i].addEventListener('click', () => {
+  //     if (readButtons[i].style.backgroundColor === '') {
+  //       readButtons[i].style.backgroundColor = '#037a1c';
+  //       readButtons[i].style.color = '#fff';
+
+  //       for (let j = 0; j < myLibrary.length; j += 1) {
+  //         if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
+  //           toggleReadStatus(myLibrary[j]);
+  //           spans[j].textContent = JSON.stringify(myLibrary[j]);
+  //         }
+  //       }
+  //     } else {
+  //       readButtons[i].style.backgroundColor = '';
+  //       readButtons[i].style.color = '#000';
+  //       for (let j = 0; j < myLibrary.length; j += 1) {
+  //         if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
+  //           toggleReadStatus(myLibrary[j]);
+  //           spans[j].textContent = JSON.stringify(myLibrary[j]);
+  //         }
+  //       }
+  //     }      
+  //   })
+  // }
 };
 
 const handlePublishNewBookButton = () => {
@@ -214,8 +265,9 @@ const applyReadButtonToNode = (node) => {
   const button = document.createElement('button');
 
   button.textContent = 'Read';
-  button.setAttribute('class', 'btn read');
+  button.setAttribute('class', `btn read`);
   node.insertAdjacentElement('afterend', button);
+  button.setAttribute('id', `read-${button.parentNode.getAttribute('id')}`);
 };
 
 // Handle buttons
