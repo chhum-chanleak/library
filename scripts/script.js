@@ -262,6 +262,7 @@ const applyReadButtonToNode = (node) => {
 const validateSubmitButton = () => {
   const inputs = document.querySelectorAll('form input');
   const submitMessage = document.querySelector('.submit-message');
+  let count = 0;
 
   for (let i = 0; i < inputs.length; i += 1) {
     if (inputs[i].value === '') {
@@ -269,7 +270,16 @@ const validateSubmitButton = () => {
       return false;
     } else {
       submitMessage.style.display = 'none';
+
     }   
+  }
+};
+
+const clearInputFields = () => {
+  const inputs = document.querySelectorAll('form input');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    inputs[i].value = '';
   }
 };
 
