@@ -216,7 +216,12 @@ const handleSubmitButton = () => {
   submitButton.addEventListener('click', createBookFromForm);
   submitButton.addEventListener('click', () => {
     for (let i = 0; i < inputs.length; i += 1) {
-      inputs[i].value = '';
+
+      if (inputs[i].value !== '') {
+        return;
+      } else {
+        inputs[i].value = '';
+      }      
     }
   })
 };
@@ -269,7 +274,7 @@ const validateSubmitButton = () => {
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');
   const publishNewBookButton = document.querySelector('button#new-book');
-  
+
   form.style.display = 'block';
   publishNewBookButton.textContent = 'HIDE FORM';
 });
