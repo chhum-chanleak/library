@@ -164,8 +164,8 @@ const handleRemoveButton = () => {
     removeButtons[i].addEventListener('click', () => {
 
       removeMessage.style.display= 'flex';
-      bookId.textContent = `${removeButtons[i].parentNode.getAttribute('id')}?`;
-      bookId.style.color = '#6c61ef';
+      bookId.textContent = `${removeButtons[i].parentNode.getAttribute('id')}`;
+      bookId.style.color = '#FF0';
       yes.setAttribute('class', `${removeButtons[i].parentNode.getAttribute('id')}`);
     });
   }
