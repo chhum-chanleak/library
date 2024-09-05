@@ -18,24 +18,38 @@ main {
   padding: var(--spacing-padding);
 
   & .library {
-    padding: var(--spacing-padding);
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      width: 715px;
+    }
+
+    & ul {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
 
     & .btn.remove {
       background-color: #ae0707;
       color: #fff;
-      margin-bottom: 1rem;
     }
 
     & li.book-list-item {
-      display: inline-block;
-      border: 1px solid #000;
+      display: flex;
+      border: 1px solid #0004;
       border-radius: var(--spacing-padding);
       padding: 4px;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4px;
     }
 
     & li.book-list-item > li {
-      display: inline-block;
-      border: 1px solid #0002;
+      display: block;
+      border: 1px solid #0004;
       border-radius: var(--spacing-padding);
       padding: 4px;
       color: #fff;
@@ -132,7 +146,6 @@ main {
     border-radius: var(--border-radius);
     padding: 4px;
     border: 1px solid #0002;
-    margin-right: 4px;
   }
 
   & button:active {
