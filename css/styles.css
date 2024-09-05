@@ -114,6 +114,11 @@ main {
       margin-bottom: 1rem;
     }
 
+    .required {
+      color: rgb(235, 72, 72);
+      font-size: 0.8rem;
+    }
+
     & .row:not(:last-child) {
       display: flex;
       flex-direction: column;
@@ -159,6 +164,7 @@ main {
   & #new-book {
     background: #862424;
     color: #fff;
+    margin-top: 4rem;
   }
 }
 
