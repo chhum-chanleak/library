@@ -102,6 +102,7 @@ const createBookFromForm = (event) => {
   clearInputFields();
   resetTotalBooks();
   showTotalBooks();
+  attachRequireToInputs();
 };
 
 // Clear all books from list
@@ -294,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.style.display = 'block';
   publishNewBookButton.textContent = 'HIDE FORM';
+  attachRequireToInputs();
 });
 
 // Show total number of books
@@ -311,6 +313,29 @@ const resetTotalBooks = () => {
   
   for (let i = 0; i < total.children.length; i += 1) {
     total.children[i].remove();
+  }
+};
+
+const attachRequireToInputs = () => {
+  const inputs = document.querySelectorAll('form input');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    const span = document.createElement('span');
+
+    span.textContent = 'Required';
+    span.setAttribute('class', 'required');
+    span.style.cssText = `
+      color: read;
+    `;
+
+    if (inputs[i].value === '') {
+      inputs[i].insertAdjacentElement('afterend', span);
+    }
+
+    // 'Require' disappear when an input field is not empty
+    inputs[i].addEventListener('input', () => {
+      inputs[i].nextElementSibling.style.display = 'none';
+    })
   }
 };
 
