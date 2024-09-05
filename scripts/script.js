@@ -181,6 +181,7 @@ const handleYes = () => {
   clearBookList();
   addBooksToList(...myLibrary);
   handleRemoveButton();
+  handleReadButton();
   resetTotalBooks();
   showTotalBooks();
 };
