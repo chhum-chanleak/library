@@ -148,6 +148,11 @@ main {
       color: red;
       margin-left: 80px;
     }
+
+    & .submit {
+      background: #1f7016;
+      color: #fff;
+    }
   }
   
   & button {
