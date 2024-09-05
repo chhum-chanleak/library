@@ -31,25 +31,27 @@ const addBooksToList = (...book) => {
   const uList = document.querySelector('.book-list');
 
   for (let i = 0; i < book.length; i += 1) {
-    const outerList = document.createElement('li');
+    const li = document.createElement('li');
+    const btnSpan = document.createElement('span');
 
+    li.setAttribute('class', 'book-list-item');
+    
     for (const prop in book[i]) {
       const span = document.createElement('span');
-      const innerList = document.createElement('li');
+      const nestedList = document.createElement('li');
 
       span.textContent = `${prop}: ${book[i][prop]}`;
-      innerList.appendChild(span);
-      outerList.appendChild(innerList);
-      uList.appendChild(outerList);
-
-      
-      if (span.textContent.includes('id:')) {
-        
-        applyRemoveButtonToNode(span.parentNode);
-        applyReadButtonToNode(span.parentNode);
-      }
+      span.setAttribute('class', `span ${prop}`);
+      nestedList.appendChild(span);
+      li.setAttribute('id', `${book[i].id}`);
+      li.appendChild(nestedList);
+      uList.appendChild(li);
     }
-
+    btnSpan.textContent = ' ';
+    li.appendChild(btnSpan); 
+    applyRemoveButtonToNode(btnSpan);
+    applyReadButtonToNode(btnSpan);
+    setColorForProps();       
   }
 };
 
@@ -79,6 +81,10 @@ const removeItem = (id, ...arrayObj) => {
 // Gather all form data
 const createBookFromForm = (event) => {
   event.preventDefault();
+  
+  if (validateSubmitButton() === false) {
+    return;
+  }
 
   const inputs = document.querySelectorAll('form input');
   const formData = [];
@@ -92,34 +98,62 @@ const createBookFromForm = (event) => {
   addBooksToList(book);
   addBooksToLibrary(book);
   handleRemoveButton();
+  handleReadButton();
+  clearInputFields();
+  resetTotalBooks();
+  showTotalBooks();
+  attachRequireToInputs();
 };
 
+// Clear all books from list
+const clearBookList = () => {
+  const lists = document.querySelectorAll('li');
 
-const handlePublishNewBookButton = () => {
-  const form = document.querySelector('form');
-  const publishNewBookButton = document.querySelector('#new-book');
-
-  if (form.style.display === '') {
-    publishNewBookButton.textContent = 'HIDE FORM';
-    form.style.display = 'block';
-  } else {
-    publishNewBookButton.textContent = 'PUBLISH NEW BOOK';
-    form.style.display = '';
+  for (let i = 0; i < lists.length; i += 1) {
+    lists[i].remove();
   }
-
 };
 
-const handleSubmitButton = (event) => {
-  const submitButton = document.querySelector('.submit');
-  const inputs = document.querySelectorAll('form input');
+// Set color to all object property tags
+const setColorForProps = () =>  {
+  const propSpans = document.querySelectorAll('li.book-list-item span');
 
-  submitButton.addEventListener('click', createBookFromForm);
-  submitButton.addEventListener('click', () => {
-    for (let i = 0; i < inputs.length; i += 1) {
-      inputs[i].value = '';
+  for (let i = 0; i < propSpans.length; i += 1) {
+    switch(propSpans[i].getAttribute('class')) {
+      case 'span title': propSpans[i].parentNode.style.backgroundColor = '#8B0000';
+        break;
+      case 'span author': propSpans[i].parentNode.style.backgroundColor = '#FF8C00';
+        break;
+      case 'span genre': propSpans[i].parentNode.style.backgroundColor = '#9B870C88';
+        break;
+      case 'span pages': propSpans[i].parentNode.style.backgroundColor = '#006400';
+        break;
+      case 'span readStatus': propSpans[i].parentNode.style.backgroundColor = '#00008B';
+        break;
+      case 'span id': propSpans[i].parentNode.style.backgroundColor = '#4B0082';
+        break;
     }
-  })
+  }
 };
+
+// Get object by inputting id
+const getObject = (id) => {
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    if (id === myLibrary[i].id) {
+      return myLibrary[i];
+    }
+  }
+};
+
+// Remove an object from an array of objects by passing an id
+const removeObj = (id) => {
+  for (let i = 0; i < myLibrary.length; i += 1) {
+    if (id === myLibrary[i].id) {
+      myLibrary.splice(i, 1);
+    }
+  }
+};
+
 const handleRemoveButton = () => {
   const removeButtons = document.querySelectorAll('.btn.remove');
   const removeMessage = document.querySelector('.remove-message');
@@ -145,9 +179,12 @@ const handleYes = () => {
   removeMessage.style.display = 'none';
   removeItem(`${yes.getAttribute('class')}`, myLibrary);
   console.log(`${yes.getAttribute('class')} has been removed.`);
-  clearList();
+  clearBookList();
   addBooksToList(...myLibrary);
   handleRemoveButton();
+  handleReadButton();
+  resetTotalBooks();
+  showTotalBooks();
 };
 
 const handleNo = () => {
@@ -164,32 +201,48 @@ no.addEventListener('click', handleNo);
 yes.addEventListener('click', handleYes);
 
 const handleReadButton = () => {
-  const readButtons = document.querySelectorAll('.book-list .btn.read');
-  const spans = document.querySelectorAll('.book-list span');
+  const readButtons = document.querySelectorAll('.btn.read');
 
   for (let i = 0; i < readButtons.length; i += 1) {
-    readButtons[i].addEventListener('click', () => {
-      if (readButtons[i].style.backgroundColor === '') {
-        readButtons[i].style.backgroundColor = '#037a1c';
-        readButtons[i].style.color = '#fff';
 
-        for (let j = 0; j < myLibrary.length; j += 1) {
-          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-            toggleReadStatus(myLibrary[j]);
-            spans[j].textContent = JSON.stringify(myLibrary[j]);
-          }
-        }
+    readButtons[i].addEventListener('click', () => {
+      
+      toggleReadStatus(getObject(readButtons[i].parentNode.getAttribute('id')));
+      clearBookList();
+      addBooksToList(...myLibrary);
+      handleRemoveButton();
+      handleReadButton();
+    });    
+  }
+};
+
+const handleSubmitButton = () => {
+  const submitButton = document.querySelector('.submit');
+  const inputs = document.querySelectorAll('form input');
+
+  submitButton.addEventListener('click', createBookFromForm);
+  submitButton.addEventListener('click', () => {
+    for (let i = 0; i < inputs.length; i += 1) {
+
+      if (inputs[i].value !== '') {
+        return;
       } else {
-        readButtons[i].style.backgroundColor = '';
-        readButtons[i].style.color = '#000';
-        for (let j = 0; j < myLibrary.length; j += 1) {
-          if (readButtons[i].getAttribute('id') === myLibrary[j].id) {
-            toggleReadStatus(myLibrary[j]);
-            spans[j].textContent = JSON.stringify(myLibrary[j]);
-          }
-        }
+        inputs[i].value = '';
       }      
-    })
+    }
+  })
+};
+
+const handlePublishNewBookButton = () => {
+  const form = document.querySelector('form');
+  const publishNewBookButton = document.querySelector('#new-book');
+
+  if (form.style.display === '') {
+    publishNewBookButton.textContent = 'HIDE FORM';
+    form.style.display = 'block';
+  } else {
+    publishNewBookButton.textContent = 'PUBLISH NEW BOOK';
+    form.style.display = '';
   }
 };
 
@@ -200,16 +253,90 @@ const applyRemoveButtonToNode = (node) => {
   button.textContent = 'Remove';
   button.setAttribute('class', 'btn remove');
   node.insertAdjacentElement('afterend', button);
-  handleRemoveButton();
 };
 
 // Attach each book with a remove button
 const applyReadButtonToNode = (node) => {
   const button = document.createElement('button');
 
-  button.textContent = 'Read';
-  button.setAttribute('class', 'btn read');
+  button.textContent = 'Mark As Read';
+  button.setAttribute('class', `btn read`);
   node.insertAdjacentElement('afterend', button);
+  button.setAttribute('id', `read-${button.parentNode.getAttribute('id')}`);
+};
+
+// Return false when one of the input fields is empty
+const validateSubmitButton = () => {
+  const inputs = document.querySelectorAll('form input');
+  const submitMessage = document.querySelector('.submit-message');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    if (inputs[i].value === '') {
+      submitMessage.style.display = 'inline-block';
+      return false;
+    } else {
+      submitMessage.style.display = 'none';
+    }   
+  }
+};
+
+const clearInputFields = () => {
+  const inputs = document.querySelectorAll('form input');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    inputs[i].value = '';
+  }
+};
+
+// Show form when DOM finished loading
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('form');
+  const publishNewBookButton = document.querySelector('button#new-book');
+
+  form.style.display = 'block';
+  publishNewBookButton.textContent = 'HIDE FORM';
+  attachRequireToInputs();
+});
+
+// Show total number of books
+const showTotalBooks = () => {
+  const total = document.querySelector('.label > h2:last-child');
+  const span = document.createElement('span');
+
+  span.textContent = `${myLibrary.length}`;
+  span.style.color = `rgb(0, 100, 0)`;
+  total.appendChild(span);
+};
+
+const resetTotalBooks = () => {
+  const total = document.querySelector('.label > h2:last-child');
+  
+  for (let i = 0; i < total.children.length; i += 1) {
+    total.children[i].remove();
+  }
+};
+
+const attachRequireToInputs = () => {
+  const inputs = document.querySelectorAll('form input');
+
+  for (let i = 0; i < inputs.length; i += 1) {
+    const span = document.createElement('span');
+
+    span.textContent = 'Required';
+    span.setAttribute('class', 'required');
+    span.style.cssText = `
+      color: read;
+    `;
+
+    if (inputs[i].value === '') {
+      inputs[i].insertAdjacentElement('afterend', span);
+    }
+
+    // 'Require' disappear when an input field is not empty
+    inputs[i].addEventListener('input', () => {
+      inputs[i].nextElementSibling.style.display = 'none';
+    })
+  }
 };
 
 // Handle buttons
