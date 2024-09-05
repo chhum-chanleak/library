@@ -67,14 +67,14 @@ main {
       border: 4px solid #942d2d;
       position: absolute;
       height: 100px;
-      width: 300px;
+      width: 400px;
       display: none;
       justify-content: center;
       align-items: center;
       border-radius: var(--border-radius);
       background: #f002;
-      left: 50%;
-      top: 280px;
+      left: 480px;
+      top: 222px;
       z-index: 1;
     }
 
@@ -88,7 +88,7 @@ main {
     & #no {
       color: #a83605;
       position: absolute;
-      left: 160px;
+      left: 260px;
       top: 60px;
     }
 
