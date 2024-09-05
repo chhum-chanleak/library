@@ -45,7 +45,7 @@ main {
       display: flex;
       border: 1px solid #0004;
       border-radius: var(--spacing-padding);
-      padding: 4px;
+      padding: 1rem;
       justify-content: flex-start;
       align-items: center;
       gap: 4px;
@@ -167,4 +167,3 @@ main {
     margin-top: 4rem;
   }
 }
-
