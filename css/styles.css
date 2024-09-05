@@ -64,7 +64,7 @@ main {
     }
 
     & .remove-message {
-      border: 4px solid #942d2d;
+      border: 4px solid #822f2f;
       position: absolute;
       height: 100px;
       width: 400px;
@@ -72,10 +72,14 @@ main {
       justify-content: center;
       align-items: center;
       border-radius: var(--border-radius);
-      background: #f002;
+      background: #412f82;
       left: 480px;
       top: 222px;
       z-index: 1;
+    }
+
+    & .remove-message > p {
+      color: #FFF;
     }
 
     & #yes {
@@ -86,7 +90,7 @@ main {
     }
 
     & #no {
-      color: #a83605;
+      color: #e34646;
       position: absolute;
       left: 260px;
       top: 60px;
