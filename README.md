@@ -1,3 +1,3 @@
 # library
 
-https://chhum-chanleak.github.io/library/
+# Desktop and laptop only: https://chhum-chanleak.github.io/library/
