@@ -176,3 +176,64 @@ main {
     margin-top: 4rem;
   }
 }
+
+@media (max-width: 430px) {
+
+  main {
+
+    & .library {
+
+      & div.label {
+        font-size: 12px;
+        width: 350px;
+        margin-bottom: 1rem;
+      }
+
+      & .book-list {
+        display: flex;
+        align-items: center;
+        max-height: 750px;
+        overflow: auto;
+  
+        & li.book-list-item {
+          display: flex;
+          flex-direction: column;
+          width: 350px;
+        }
+
+        & button.btn.read {
+          margin-right: 14px;
+          margin-top: 2rem;
+        } 
+      }
+
+      & .remove-message {
+        border: 4px solid #822f2f;
+        position: absolute;
+        height: 100px;
+        width: 340px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        border-radius: var(--border-radius);
+        background: #412f82;
+        left: 16px;
+        top: 500px;
+        z-index: 1;
+
+        & #no {
+          position: absolute;
+          left: 220px;
+        }
+      }
+    }
+
+    & form {
+      width: 350px;
+  
+      div.row {
+        width: 300px;
+      }
+    }
+  }
+}
